@@ -54,3 +54,15 @@ button:hover{
     color: black;
 }
 
+#limparDisplay{
+    background-color: #900;
+    border: 2px solid #700;
+}
+#limparCalculo{
+    background-color: #940;
+    border: 2px solid #740;
+}
+button.gray{
+    background-color: #666;
+    border: 2px solid #555;
+}
