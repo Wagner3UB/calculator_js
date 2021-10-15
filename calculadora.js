@@ -12,7 +12,7 @@ const operacaoPendente = () => operador != undefined;
 
 const calcular = () =>{
   if(operacaoPendente()){
-    const numeroAtual = parseFloat(display.textContent);
+    const numeroAtual = parseFloat(display.textContent.replace(',' , '.'));
     novoNumero = true; //isso vai servir para limpar o display para exibir o numero atual
     const resultado = eval (`${numeroAnterior}${operador}${numeroAtual}`);
     atualizarDisplay(resultado);
@@ -32,10 +32,10 @@ const calcular = () =>{
 }
 const atualizarDisplay = (texto) => {
   if(novoNumero){
-    display.textContent = texto;
+    display.textContent = texto.toLocaleString('BR');//usado para usar o decimal no brasil
     novoNumero = false;
   }else{
-    display.textContent += texto;
+    display.textContent += texto.toLocaleString('BR');
   }
 }
 const inserirNumero = (evento) => {
@@ -51,7 +51,7 @@ const selecionarOperador = (evento) => {
     novoNumero = true;
     operador = evento.target.textContent;
     //Toda vez que for clicado em um operador, este operador sera armazenado aqui
-    numeroAnterior = parseFloat(display.textContent);
+    numeroAnterior = parseFloat(display.textContent.replace(',' , '.'));
     //Toda vez que for clicado em um operador o numero do display sera armazenado aqui
   }
 }
@@ -94,7 +94,6 @@ document.getElementById('inverter').addEventListener('click', inverterSinal);
 
 //Colocar numero decimal
 const existeDecimal = () => display.textContent.indexOf(',') != -1; // testa para saber se existe , na string
-console.log(existeDecimal);
 const existeValor = () => display.textContent.length > 0; //testa para saber se tem um numero baseado no tamanho da string
 
 const inserirDecimal = () => {
@@ -107,3 +106,35 @@ const inserirDecimal = () => {
   }
 }
 document.getElementById('decimal').addEventListener('click', inserirDecimal);
+
+//teclas
+const mapaTeclado = {
+  '0'         : 'tecla0',
+  '1'         : 'tecla1',
+  '2'         : 'tecla2',
+  '3'         : 'tecla3',
+  '4'         : 'tecla4',
+  '5'         : 'tecla5',
+  '6'         : 'tecla6',
+  '7'         : 'tecla7',
+  '8'         : 'tecla8',
+  '9'         : 'tecla9',
+  '/'         : 'operadorDividir',
+  '*'         : 'operadorMultiplicar',
+  '-'         : 'operadorDiminuir',
+  '+'         : 'operadorAdicionar',
+  '='         : 'igual',
+  'Enter'     : 'igual',
+  'Backspace' : 'backspace',
+  'c'         : 'limparDisplay',
+  'Escape'    : 'limparCalculo',
+  ','         : 'decimal'
+}
+
+const mapearTeclado = (evento) => {
+  const tecla = evento.key;
+  
+  const teclaPermitida = () => Object.keys(mapaTeclado).indexOf(tecla) != -1;
+  if (teclaPermitida()) document.getElementById(mapaTeclado[tecla]).click();
+}
+document.addEventListener('keydown', mapearTeclado);
